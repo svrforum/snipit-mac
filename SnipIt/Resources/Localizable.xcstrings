@@ -1,0 +1,816 @@
+{
+  "sourceLanguage" : "ko",
+  "strings" : {
+    "전체 화면" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Full Screen"
+          }
+        }
+      }
+    },
+    "영역 선택" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Region"
+          }
+        }
+      }
+    },
+    "활성 창" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Active Window"
+          }
+        }
+      }
+    },
+    "스크롤" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scroll"
+          }
+        }
+      }
+    },
+    "GIF 녹화" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GIF Recording"
+          }
+        }
+      }
+    },
+    "MP4 녹화" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MP4 Recording"
+          }
+        }
+      }
+    },
+    "최근 캡처" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recent Captures"
+          }
+        }
+      }
+    },
+    "전체보기" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View All"
+          }
+        }
+      }
+    },
+    "후원하기" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Support"
+          }
+        }
+      }
+    },
+    "캡처 히스토리" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capture History"
+          }
+        }
+      }
+    },
+    "전체 삭제" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete All"
+          }
+        }
+      }
+    },
+    "설정" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        }
+      }
+    },
+    "일반" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "General"
+          }
+        }
+      }
+    },
+    "캡처" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capture"
+          }
+        }
+      }
+    },
+    "녹화" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recording"
+          }
+        }
+      }
+    },
+    "단축키" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shortcuts"
+          }
+        }
+      }
+    },
+    "저장" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Storage"
+          }
+        }
+      }
+    },
+    "테마" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Theme"
+          }
+        }
+      }
+    },
+    "정보" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "About"
+          }
+        }
+      }
+    },
+    "클립보드에 복사됨" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copied to clipboard"
+          }
+        }
+      }
+    },
+    "완료" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
+          }
+        }
+      }
+    },
+    "닫기" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        }
+      }
+    },
+    "선택" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select"
+          }
+        }
+      }
+    },
+    "펜" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pen"
+          }
+        }
+      }
+    },
+    "화살표" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrow"
+          }
+        }
+      }
+    },
+    "직선" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Line"
+          }
+        }
+      }
+    },
+    "사각형" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rectangle"
+          }
+        }
+      }
+    },
+    "원" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Circle"
+          }
+        }
+      }
+    },
+    "텍스트" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Text"
+          }
+        }
+      }
+    },
+    "형광펜" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Highlighter"
+          }
+        }
+      }
+    },
+    "블러" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blur"
+          }
+        }
+      }
+    },
+    "자르기" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crop"
+          }
+        }
+      }
+    },
+    "번호" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Number"
+          }
+        }
+      }
+    },
+    "스텝" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Step"
+          }
+        }
+      }
+    },
+    "코드" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Code"
+          }
+        }
+      }
+    },
+    "시작 시 자동 실행" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Launch at Login"
+          }
+        }
+      }
+    },
+    "캡처 사운드 재생" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Play Capture Sound"
+          }
+        }
+      }
+    },
+    "캡처 후 에디터 자동 열기" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Editor After Capture"
+          }
+        }
+      }
+    },
+    "자동 클립보드 복사" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auto Copy to Clipboard"
+          }
+        }
+      }
+    },
+    "언어" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Language"
+          }
+        }
+      }
+    },
+    "시스템" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "System"
+          }
+        }
+      }
+    },
+    "다크" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark"
+          }
+        }
+      }
+    },
+    "라이트" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Light"
+          }
+        }
+      }
+    },
+    "복사" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy"
+          }
+        }
+      }
+    },
+    "저장 완료" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saved"
+          }
+        }
+      }
+    },
+    "편집기에서 열기" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open in Editor"
+          }
+        }
+      }
+    },
+    "삭제" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        }
+      }
+    },
+    "커서 포함" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Include Cursor"
+          }
+        }
+      }
+    },
+    "투명도" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opacity"
+          }
+        }
+      }
+    },
+    "업데이트 확인" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check for Updates"
+          }
+        }
+      }
+    },
+    "캡처 내역 없음" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No capture history"
+          }
+        }
+      }
+    },
+    "캡처 히스토리가 비어있습니다" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capture history is empty"
+          }
+        }
+      }
+    },
+    "이미지가 없습니다" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No image available"
+          }
+        }
+      }
+    },
+    "로그인 시 자동 실행" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Launch at Login"
+          }
+        }
+      }
+    },
+    "캡처 후 편집기 열기" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Editor After Capture"
+          }
+        }
+      }
+    },
+    "클립보드에 자동 복사" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auto Copy to Clipboard"
+          }
+        }
+      }
+    },
+    "배경 어둡기" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Background Dimming"
+          }
+        }
+      }
+    },
+    "기본 이미지 형식" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Default Image Format"
+          }
+        }
+      }
+    },
+    "프레임 레이트" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frame Rate"
+          }
+        }
+      }
+    },
+    "GIF 품질" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GIF Quality"
+          }
+        }
+      }
+    },
+    "원본" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Original"
+          }
+        }
+      }
+    },
+    "프레임 스킵" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skip Frames"
+          }
+        }
+      }
+    },
+    "프레임 스킵 + 축소" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skip Frames + Downscale"
+          }
+        }
+      }
+    },
+    "비디오 코덱" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Video Codec"
+          }
+        }
+      }
+    },
+    "최대 녹화 시간" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Max Recording Duration"
+          }
+        }
+      }
+    },
+    "저장 경로" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save Path"
+          }
+        }
+      }
+    },
+    "변경" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change"
+          }
+        }
+      }
+    },
+    "파일명 패턴" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filename Pattern"
+          }
+        }
+      }
+    },
+    "전체 화면 캡처" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Full Screen Capture"
+          }
+        }
+      }
+    },
+    "영역 선택 캡처" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Region Select Capture"
+          }
+        }
+      }
+    },
+    "활성 창 캡처" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Active Window Capture"
+          }
+        }
+      }
+    },
+    "스크롤 캡처" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scroll Capture"
+          }
+        }
+      }
+    },
+    "실행 취소" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Undo"
+          }
+        }
+      }
+    },
+    "다시 실행" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Redo"
+          }
+        }
+      }
+    },
+    "고정" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pin"
+          }
+        }
+      }
+    },
+    "이전" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Previous"
+          }
+        }
+      }
+    },
+    "다음" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next"
+          }
+        }
+      }
+    },
+    "시작하기" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get Started"
+          }
+        }
+      }
+    },
+    "SnipIt에 오신 것을 환영합니다" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Welcome to SnipIt"
+          }
+        }
+      }
+    },
+    "화면 녹화 권한" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screen Recording Permission"
+          }
+        }
+      }
+    },
+    "권한 요청하기" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Request Permission"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
