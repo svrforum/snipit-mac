@@ -8,21 +8,22 @@ struct EditorCanvasView: View {
             let imageSize = viewModel.image.size
             let canvasSize = geometry.size
             let fitted = fittedRect(imageSize: imageSize, in: canvasSize)
+            let scale = imageSize.width / fitted.width
+
+            let _ = updateScale(scale)
 
             ZStack {
                 // Layer 1: Base image
                 Image(nsImage: viewModel.image)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
+                    .frame(width: fitted.width, height: fitted.height)
 
                 // Layer 2: Canvas for committed annotations + live preview
                 Canvas { context, size in
-                    // Draw committed annotations
                     for annotation in viewModel.annotations {
                         annotation.draw(in: &context, size: size)
                     }
-
-                    // Draw live preview of current tool
                     if viewModel.isDrawing {
                         drawPreview(in: &context, size: size)
                     }
@@ -48,6 +49,7 @@ struct EditorCanvasView: View {
                             }
                     )
             }
+            .frame(width: canvasSize.width, height: canvasSize.height)
         }
     }
 
@@ -148,6 +150,14 @@ struct EditorCanvasView: View {
     }
 
     // MARK: - Helpers
+
+    private func updateScale(_ scale: CGFloat) {
+        if viewModel.canvasScale != scale {
+            DispatchQueue.main.async {
+                viewModel.canvasScale = scale
+            }
+        }
+    }
 
     private func fittedRect(imageSize: CGSize, in containerSize: CGSize) -> CGSize {
         let widthRatio = containerSize.width / imageSize.width

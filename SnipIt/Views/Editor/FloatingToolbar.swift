@@ -9,63 +9,66 @@ struct FloatingToolbar: View {
     private let strokeWidths: [CGFloat] = [1, 2, 3, 5, 8]
 
     var body: some View {
-        HStack(spacing: 6) {
-            // Drawing tools group
-            ForEach(drawingTools) { tool in
-                toolButton(tool)
-            }
+        HStack {
+            Spacer(minLength: 0)
+            HStack(spacing: 4) {
+                ForEach(drawingTools) { tool in
+                    toolButton(tool)
+                }
 
-            Divider()
-                .frame(height: 20)
+                separator
 
-            // Markup tools group
-            ForEach(markupTools) { tool in
-                toolButton(tool)
-            }
+                ForEach(markupTools) { tool in
+                    toolButton(tool)
+                }
 
-            Divider()
-                .frame(height: 20)
+                separator
 
-            // Annotation tools group
-            ForEach(annotationTools) { tool in
-                toolButton(tool)
-            }
+                ForEach(annotationTools) { tool in
+                    toolButton(tool)
+                }
 
-            Divider()
-                .frame(height: 20)
+                separator
 
-            // Color picker
-            ColorPicker("", selection: $viewModel.strokeColor)
-                .labelsHidden()
-                .frame(width: 24, height: 24)
-
-            // Stroke width menu
-            Menu {
-                ForEach(strokeWidths, id: \.self) { width in
-                    Button {
-                        viewModel.strokeWidth = width
-                    } label: {
-                        HStack {
-                            Text("\(Int(width)) px")
-                            if viewModel.strokeWidth == width {
-                                Image(systemName: "checkmark")
+                // Stroke width
+                Menu {
+                    ForEach(strokeWidths, id: \.self) { width in
+                        Button {
+                            viewModel.strokeWidth = width
+                        } label: {
+                            HStack {
+                                Text("\(Int(width)) px")
+                                if viewModel.strokeWidth == width {
+                                    Image(systemName: "checkmark")
+                                }
                             }
                         }
                     }
+                } label: {
+                    Image(systemName: "lineweight")
+                        .font(.system(size: 13))
+                        .frame(width: 26, height: 26)
                 }
-            } label: {
-                Image(systemName: "lineweight")
-                    .font(.system(size: 14))
-                    .frame(width: 28, height: 28)
+                .menuStyle(.borderlessButton)
+                .frame(width: 26)
+                .help("선 두께")
+
+                // Color picker
+                ColorPicker("", selection: $viewModel.strokeColor)
+                    .labelsHidden()
+                    .frame(width: 26, height: 26)
+                    .help("색상")
             }
-            .menuStyle(.borderlessButton)
-            .frame(width: 28)
+            Spacer(minLength: 0)
         }
         .padding(.horizontal, 12)
-        .padding(.vertical, 8)
-        .background(.ultraThinMaterial)
-        .cornerRadius(14)
-        .shadow(color: .black.opacity(0.2), radius: 8, x: 0, y: 2)
+        .padding(.vertical, 4)
+    }
+
+    private var separator: some View {
+        Divider()
+            .frame(height: 18)
+            .padding(.horizontal, 2)
     }
 
     // MARK: - Tool Button
@@ -76,17 +79,17 @@ struct FloatingToolbar: View {
             viewModel.currentTool = tool
         } label: {
             Image(systemName: tool.icon)
-                .font(.system(size: 14))
-                .frame(width: 28, height: 28)
+                .font(.system(size: 13))
+                .frame(width: 26, height: 26)
                 .foregroundColor(viewModel.currentTool == tool ? .accentColor : .primary)
                 .background(
                     viewModel.currentTool == tool
                         ? Color.accentColor.opacity(0.15)
                         : Color.clear
                 )
-                .cornerRadius(6)
+                .cornerRadius(5)
         }
         .buttonStyle(.plain)
-        .help(tool.label)
+        .help(tool.shortcutKey != nil ? "\(tool.label) (\(tool.shortcutKey!))" : tool.label)
     }
 }

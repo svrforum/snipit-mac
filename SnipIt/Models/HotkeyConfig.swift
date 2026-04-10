@@ -11,8 +11,8 @@ struct HotkeyConfig: Codable, Equatable {
     )
 
     static let regionCapture = HotkeyConfig(
-        keyCode: UInt32(kVK_ANSI_S),
-        modifiers: UInt32(controlKey | optionKey)
+        keyCode: UInt32(kVK_ANSI_C),
+        modifiers: UInt32(cmdKey | shiftKey)
     )
 
     static let windowCapture = HotkeyConfig(

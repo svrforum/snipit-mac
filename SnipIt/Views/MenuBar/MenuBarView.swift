@@ -3,20 +3,22 @@ import SwiftUI
 struct MenuBarView: View {
     @Environment(AppState.self) private var appState
     @Environment(\.openWindow) private var openWindow
+    @Environment(\.openSettings) private var openSettings
 
     var body: some View {
         VStack(spacing: 0) {
             // Header
             HStack {
                 Image(systemName: "scissors")
-                    .foregroundStyle(.accent)
+                    .foregroundStyle(.tint)
                 Text("SnipIt")
                     .font(.headline)
 
                 Spacer()
 
                 Button {
-                    NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+                    openSettings()
+                    NSApp.activate(ignoringOtherApps: true)
                 } label: {
                     Image(systemName: "gear")
                         .foregroundStyle(.secondary)
@@ -42,7 +44,7 @@ struct MenuBarView: View {
                     captureButton(
                         title: "영역 선택",
                         icon: "rectangle.dashed.badge.record",
-                        shortcut: "⌃⌥S"
+                        shortcut: "⌘⇧C"
                     ) {
                         appState.showCaptureOverlay(mode: .region)
                     }
@@ -133,7 +135,7 @@ struct MenuBarView: View {
                     .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.plain)
-                .foregroundStyle(.accent)
+                .foregroundStyle(.tint)
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
@@ -155,9 +157,31 @@ struct MenuBarView: View {
             }
             .buttonStyle(.plain)
             .foregroundStyle(.secondary)
+            .padding(.top, 8)
+
+            Divider()
+
+            Button {
+                NSApplication.shared.terminate(nil)
+            } label: {
+                HStack {
+                    Image(systemName: "power")
+                    Text("종료")
+                        .font(.caption)
+                }
+                .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.plain)
+            .foregroundStyle(.secondary)
             .padding(.vertical, 8)
         }
         .frame(width: 280)
+        .onAppear {
+            if appState.shouldOpenSettings {
+                appState.shouldOpenSettings = false
+                openSettings()
+            }
+        }
     }
 
     // MARK: - Capture Button
@@ -173,7 +197,7 @@ struct MenuBarView: View {
             VStack(spacing: 4) {
                 Image(systemName: icon)
                     .font(.system(size: 20))
-                    .foregroundStyle(isActive ? .red : .accent)
+                    .foregroundStyle(isActive ? Color.red : Color.accentColor)
 
                 Text(title)
                     .font(.caption2)

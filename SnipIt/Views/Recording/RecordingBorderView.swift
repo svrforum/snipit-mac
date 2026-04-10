@@ -89,7 +89,7 @@ final class RecordingBorderWindow {
         borderLayer?.removeAllAnimations()
         borderLayer = nil
 
-        window?.close()
+        window?.orderOut(nil)
         window = nil
     }
 }
