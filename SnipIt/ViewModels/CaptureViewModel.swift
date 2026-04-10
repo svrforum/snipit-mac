@@ -19,8 +19,12 @@ final class CaptureViewModel {
     var showEditor = false
     var errorMessage: String?
 
+    private var _cachedSettings: AppSettings?
     private var settings: AppSettings {
-        (try? storageService.loadSettings()) ?? AppSettings()
+        if let cached = _cachedSettings { return cached }
+        let s = (try? storageService.loadSettings()) ?? AppSettings()
+        _cachedSettings = s
+        return s
     }
 
     // MARK: - Initialization

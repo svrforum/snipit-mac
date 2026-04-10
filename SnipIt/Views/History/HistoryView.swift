@@ -122,17 +122,6 @@ struct HistoryItemView: View {
     // MARK: - Actions
 
     private func openInEditor() {
-        guard let image = viewModel.loadImage(for: item) else { return }
-        NotificationCenter.default.post(
-            name: .openImageInEditor,
-            object: nil,
-            userInfo: ["image": image]
-        )
+        // Handled via EditorWindow's history sidebar
     }
-}
-
-// MARK: - Notification
-
-extension Notification.Name {
-    static let openImageInEditor = Notification.Name("openImageInEditor")
 }

@@ -18,7 +18,7 @@ struct AboutSettingsView: View {
                 HStack(spacing: 12) {
                     Image(systemName: "scissors")
                         .font(.system(size: 36))
-                        .foregroundStyle(.accent)
+                        .foregroundStyle(.tint)
 
                     VStack(alignment: .leading, spacing: 2) {
                         Text("SnipIt")

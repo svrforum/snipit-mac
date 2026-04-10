@@ -22,16 +22,13 @@ final class PermissionService {
     // MARK: - Screen Recording
 
     func checkScreenRecordingPermission() async {
-        do {
-            _ = try await SCShareableContent.current
-            hasScreenRecordingPermission = true
-        } catch {
-            hasScreenRecordingPermission = false
-        }
+        hasScreenRecordingPermission = CGPreflightScreenCaptureAccess()
     }
 
     func requestScreenRecordingPermission() {
-        CGRequestScreenCaptureAccess()
+        if !CGPreflightScreenCaptureAccess() {
+            CGRequestScreenCaptureAccess()
+        }
     }
 
     // MARK: - Accessibility
@@ -41,8 +38,10 @@ final class PermissionService {
     }
 
     func requestAccessibilityPermission() {
-        let options = [kAXTrustedCheckOptionPrompt.takeUnretainedValue(): true] as CFDictionary
-        hasAccessibilityPermission = AXIsProcessTrustedWithOptions(options)
+        if !AXIsProcessTrusted() {
+            let options = [kAXTrustedCheckOptionPrompt.takeUnretainedValue(): true] as CFDictionary
+            _ = AXIsProcessTrustedWithOptions(options)
+        }
     }
 
     // MARK: - System Preferences

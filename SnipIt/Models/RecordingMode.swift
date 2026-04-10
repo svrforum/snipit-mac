@@ -21,3 +21,11 @@ enum VideoCodec: String, Codable, CaseIterable {
     case h264
     case hevc
 }
+
+enum GifMaxWidth: Int, Codable, CaseIterable {
+    case w320 = 320
+    case w480 = 480
+    case w640 = 640
+    case w800 = 800
+    case original = 9999
+}

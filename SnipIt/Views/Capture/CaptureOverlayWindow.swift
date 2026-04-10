@@ -10,6 +10,63 @@ enum CaptureResult {
     case fullScreen
 }
 
+// MARK: - Overlay State (Observable for SwiftUI binding)
+
+@Observable
+final class OverlayState {
+    var mousePosition: CGPoint = .zero
+    var startPoint: CGPoint = .zero
+    var currentPoint: CGPoint = .zero
+    var isSelecting = false
+    var screenImage: NSImage?
+    var detectedWindowFrame: CGRect?
+    var windowTitle: String?
+    var dimmingOpacity: Double = 0.3
+}
+
+// MARK: - OverlayContentView
+
+struct OverlayContentView: View {
+    @Bindable var state: OverlayState
+
+    var body: some View {
+        ZStack {
+            if state.isSelecting {
+                RegionSelectionView(
+                    dimmingOpacity: state.dimmingOpacity,
+                    startPoint: state.startPoint,
+                    currentPoint: state.currentPoint,
+                    isSelecting: true
+                )
+
+                MagnifierView(screenImage: state.screenImage, mousePosition: state.mousePosition)
+                    .position(
+                        x: state.mousePosition.x + 80,
+                        y: state.mousePosition.y - 80
+                    )
+            } else {
+                RegionSelectionView(
+                    dimmingOpacity: state.dimmingOpacity,
+                    startPoint: .zero,
+                    currentPoint: .zero,
+                    isSelecting: false
+                )
+
+                SmartDetectionView(
+                    detectedWindowFrame: state.detectedWindowFrame,
+                    windowTitle: state.windowTitle
+                )
+
+                MagnifierView(screenImage: state.screenImage, mousePosition: state.mousePosition)
+                    .position(
+                        x: state.mousePosition.x + 80,
+                        y: state.mousePosition.y - 80
+                    )
+            }
+        }
+    }
+}
+
 // MARK: - CaptureOverlayWindow
 
 final class CaptureOverlayWindow: NSObject {
@@ -17,26 +74,17 @@ final class CaptureOverlayWindow: NSObject {
     // MARK: - Dependencies
 
     private let captureVM: CaptureViewModel
-    private let dimmingOpacity: Double
+    private let state: OverlayState
 
     // MARK: - State
 
     private var overlayWindow: NSWindow?
-    private var screenImage: NSImage?
     private var continuation: CheckedContinuation<CaptureResult?, Never>?
 
-    private var mousePosition: CGPoint = .zero
-    private var startPoint: CGPoint = .zero
-    private var currentPoint: CGPoint = .zero
-    private var isSelecting = false
     private var isDragging = false
     private var detectedWindow: SCWindow?
-    private var detectedWindowFrame: CGRect?
-    private var windowTitle: String?
 
     private var localMonitor: Any?
-    private var globalMonitor: Any?
-    private var mouseMoveMonitor: Any?
 
     private let captureService = ScreenCaptureService()
 
@@ -44,7 +92,8 @@ final class CaptureOverlayWindow: NSObject {
 
     init(captureVM: CaptureViewModel, dimmingOpacity: Double = 0.4) {
         self.captureVM = captureVM
-        self.dimmingOpacity = dimmingOpacity
+        self.state = OverlayState()
+        self.state.dimmingOpacity = dimmingOpacity
         super.init()
     }
 
@@ -65,10 +114,16 @@ final class CaptureOverlayWindow: NSObject {
         let window = NSWindow.createOverlayWindow()
         overlayWindow = window
 
-        // Take a screenshot to use for the magnifier
+        // Create NSHostingView ONCE with observable state
+        let contentView = OverlayContentView(state: state)
+        let hostingView = NSHostingView(rootView: contentView)
+        hostingView.frame = window.contentView?.bounds ?? .zero
+        hostingView.autoresizingMask = [.width, .height]
+        window.contentView = hostingView
+
+        // Capture screen image for magnifier
         Task {
             await captureScreenImage()
-            updateContent()
         }
 
         window.makeKeyAndOrderFront(nil)
@@ -96,7 +151,7 @@ final class CaptureOverlayWindow: NSObject {
             )
 
             await MainActor.run {
-                self.screenImage = NSImage(
+                self.state.screenImage = NSImage(
                     cgImage: cgImage,
                     size: NSSize(width: display.width, height: display.height)
                 )
@@ -104,68 +159,6 @@ final class CaptureOverlayWindow: NSObject {
         } catch {
             // Magnifier will simply not show an image
         }
-    }
-
-    // MARK: - Content Update
-
-    @MainActor
-    private func updateContent() {
-        guard let window = overlayWindow else { return }
-
-        let screenImage = self.screenImage
-        let mousePosition = self.mousePosition
-        let dimmingOpacity = self.dimmingOpacity
-        let startPoint = self.startPoint
-        let currentPoint = self.currentPoint
-        let isSelecting = self.isSelecting
-        let detectedWindowFrame = self.detectedWindowFrame
-        let windowTitle = self.windowTitle
-
-        let contentView = ZStack {
-            if isSelecting {
-                RegionSelectionView(
-                    dimmingOpacity: dimmingOpacity,
-                    startPoint: startPoint,
-                    currentPoint: currentPoint,
-                    isSelecting: true
-                )
-
-                // Magnifier during drag
-                MagnifierView(screenImage: screenImage, mousePosition: mousePosition)
-                    .position(
-                        x: mousePosition.x + 80,
-                        y: mousePosition.y - 80
-                    )
-            } else {
-                // Smart detection mode
-                RegionSelectionView(
-                    dimmingOpacity: dimmingOpacity,
-                    startPoint: .zero,
-                    currentPoint: .zero,
-                    isSelecting: false
-                )
-
-                SmartDetectionView(
-                    detectedWindowFrame: detectedWindowFrame,
-                    windowTitle: windowTitle
-                )
-
-                // Magnifier follows mouse
-                MagnifierView(screenImage: screenImage, mousePosition: mousePosition)
-                    .position(
-                        x: mousePosition.x + 80,
-                        y: mousePosition.y - 80
-                    )
-            }
-        }
-        .frame(
-            width: window.frame.width,
-            height: window.frame.height
-        )
-
-        let hostingView = NSHostingView(rootView: contentView)
-        hostingView.frame = window.contentView?.bounds ?? .zero
-        window.contentView = hostingView
     }
 
     // MARK: - Event Monitors
@@ -203,7 +196,9 @@ final class CaptureOverlayWindow: NSObject {
         let point = window.convertPoint(fromScreen: NSEvent.mouseLocation)
         let flipped = CGPoint(x: point.x, y: window.frame.height - point.y)
 
-        mousePosition = flipped
+        Task { @MainActor in
+            state.mousePosition = flipped
+        }
 
         // Smart window detection
         Task {
@@ -213,7 +208,6 @@ final class CaptureOverlayWindow: NSObject {
                 await MainActor.run {
                     self.detectedWindow = detected
                     if let detected {
-                        // Convert window frame to overlay coordinates
                         let screen = NSScreen.main
                         let screenHeight = screen?.frame.height ?? 0
                         let wFrame = detected.frame
@@ -223,20 +217,18 @@ final class CaptureOverlayWindow: NSObject {
                             width: wFrame.width,
                             height: wFrame.height
                         )
-                        self.detectedWindowFrame = overlayFrame
-                        self.windowTitle = detected.title
+                        self.state.detectedWindowFrame = overlayFrame
+                        self.state.windowTitle = detected.title
                     } else {
-                        self.detectedWindowFrame = nil
-                        self.windowTitle = nil
+                        self.state.detectedWindowFrame = nil
+                        self.state.windowTitle = nil
                     }
-                    self.updateContent()
                 }
             } catch {
                 await MainActor.run {
                     self.detectedWindow = nil
-                    self.detectedWindowFrame = nil
-                    self.windowTitle = nil
-                    self.updateContent()
+                    self.state.detectedWindowFrame = nil
+                    self.state.windowTitle = nil
                 }
             }
         }
@@ -247,12 +239,11 @@ final class CaptureOverlayWindow: NSObject {
         let point = window.convertPoint(fromScreen: NSEvent.mouseLocation)
         let flipped = CGPoint(x: point.x, y: window.frame.height - point.y)
 
-        startPoint = flipped
-        currentPoint = flipped
         isDragging = false
 
         Task { @MainActor in
-            updateContent()
+            state.startPoint = flipped
+            state.currentPoint = flipped
         }
     }
 
@@ -261,23 +252,22 @@ final class CaptureOverlayWindow: NSObject {
         let point = window.convertPoint(fromScreen: NSEvent.mouseLocation)
         let flipped = CGPoint(x: point.x, y: window.frame.height - point.y)
 
-        currentPoint = flipped
         isDragging = true
-        isSelecting = true
 
         Task { @MainActor in
-            updateContent()
+            state.currentPoint = flipped
+            state.mousePosition = flipped
+            state.isSelecting = true
         }
     }
 
     private func handleMouseUp(_ event: NSEvent) {
-        if isSelecting {
-            // Region selection
+        if state.isSelecting {
             let rect = CGRect(
-                x: min(startPoint.x, currentPoint.x),
-                y: min(startPoint.y, currentPoint.y),
-                width: abs(currentPoint.x - startPoint.x),
-                height: abs(currentPoint.y - startPoint.y)
+                x: min(state.startPoint.x, state.currentPoint.x),
+                y: min(state.startPoint.y, state.currentPoint.y),
+                width: abs(state.currentPoint.x - state.startPoint.x),
+                height: abs(state.currentPoint.y - state.startPoint.y)
             )
 
             if rect.width > 5 && rect.height > 5 {
@@ -286,7 +276,6 @@ final class CaptureOverlayWindow: NSObject {
                         let content = try await captureService.getAvailableContent()
                         guard let display = content.displays.first else { return }
 
-                        // Convert overlay rect to screen coordinates
                         let screenHeight = CGFloat(display.height)
                         let captureRect = CGRect(
                             x: rect.origin.x,
@@ -295,29 +284,20 @@ final class CaptureOverlayWindow: NSObject {
                             height: rect.height
                         )
 
-                        await cleanup()
-                        continuation?.resume(returning: .region(display, captureRect))
-                        continuation = nil
+                        await finish(with: .region(display, captureRect))
                     } catch {
-                        await cleanup()
-                        continuation?.resume(returning: nil)
-                        continuation = nil
+                        await finish(with: nil)
                     }
                 }
             } else {
-                // Too small, reset
-                isSelecting = false
-                isDragging = false
                 Task { @MainActor in
-                    updateContent()
+                    state.isSelecting = false
                 }
+                isDragging = false
             }
         } else if !isDragging, let window = detectedWindow {
-            // Click on detected window
             Task {
-                await cleanup()
-                continuation?.resume(returning: .window(window))
-                continuation = nil
+                await finish(with: .window(window))
             }
         }
     }
@@ -327,41 +307,27 @@ final class CaptureOverlayWindow: NSObject {
     private func handleKeyDown(_ event: NSEvent) {
         switch event.keyCode {
         case 53: // ESC
-            Task {
-                await cleanup()
-                continuation?.resume(returning: nil)
-                continuation = nil
-            }
+            Task { await finish(with: nil) }
         case 49: // Space
-            Task {
-                await cleanup()
-                continuation?.resume(returning: .fullScreen)
-                continuation = nil
-            }
+            Task { await finish(with: .fullScreen) }
         default:
             break
         }
     }
 
-    // MARK: - Cleanup
+    // MARK: - Finish & Cleanup
 
     @MainActor
-    private func cleanup() {
+    private func finish(with result: CaptureResult?) {
         if let localMonitor {
             NSEvent.removeMonitor(localMonitor)
         }
-        if let globalMonitor {
-            NSEvent.removeMonitor(globalMonitor)
-        }
-        if let mouseMoveMonitor {
-            NSEvent.removeMonitor(mouseMoveMonitor)
-        }
-
         localMonitor = nil
-        globalMonitor = nil
-        mouseMoveMonitor = nil
 
-        overlayWindow?.close()
+        overlayWindow?.orderOut(nil)
         overlayWindow = nil
+
+        continuation?.resume(returning: result)
+        continuation = nil
     }
 }

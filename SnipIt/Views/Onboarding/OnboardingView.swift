@@ -58,7 +58,7 @@ struct OnboardingView: View {
 
             Image(systemName: "scissors")
                 .font(.system(size: 56))
-                .foregroundStyle(.accent)
+                .foregroundStyle(.tint)
 
             Text("SnipIt에 오신 것을 환영합니다")
                 .font(.title2)
@@ -83,7 +83,7 @@ struct OnboardingView: View {
 
             Image(systemName: "lock.shield")
                 .font(.system(size: 56))
-                .foregroundStyle(.accent)
+                .foregroundStyle(.tint)
 
             Text("화면 녹화 권한")
                 .font(.title2)
@@ -113,7 +113,7 @@ struct OnboardingView: View {
 
             Image(systemName: "keyboard")
                 .font(.system(size: 56))
-                .foregroundStyle(.accent)
+                .foregroundStyle(.tint)
 
             Text("단축키")
                 .font(.title2)
@@ -121,7 +121,7 @@ struct OnboardingView: View {
 
             VStack(spacing: 8) {
                 shortcutRow("전체 화면", shortcut: "⌃⌥A")
-                shortcutRow("영역 선택", shortcut: "⌃⌥S")
+                shortcutRow("영역 선택", shortcut: "⌘⇧C")
                 shortcutRow("활성 창", shortcut: "⌃⌥W")
                 shortcutRow("GIF 녹화", shortcut: "⌃⌥G")
                 shortcutRow("MP4 녹화", shortcut: "⌃⌥V")

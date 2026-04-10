@@ -46,6 +46,44 @@ enum EditorTool: String, CaseIterable, Identifiable {
         case .codeBlock: return "코드"
         }
     }
+
+    /// Display character for tooltip
+    var shortcutKey: Character? {
+        switch self {
+        case .select:    return "V"
+        case .pen:       return "P"
+        case .arrow:     return "A"
+        case .line:      return "L"
+        case .rectangle: return "R"
+        case .ellipse:   return "E"
+        case .text:      return "T"
+        case .highlight: return "H"
+        case .blur:      return "M"
+        case .crop:      return "C"
+        default:         return nil
+        }
+    }
+
+    /// Hardware keyCode (language-independent)
+    var keyCode: UInt16? {
+        switch self {
+        case .select:    return 9   // V
+        case .pen:       return 35  // P
+        case .arrow:     return 0   // A
+        case .line:      return 37  // L
+        case .rectangle: return 15  // R
+        case .ellipse:   return 14  // E
+        case .text:      return 17  // T
+        case .highlight: return 4   // H
+        case .blur:      return 46  // M
+        case .crop:      return 8   // C
+        default:         return nil
+        }
+    }
+
+    static func fromKeyCode(_ code: UInt16) -> EditorTool? {
+        allCases.first { $0.keyCode == code }
+    }
 }
 
 // MARK: - EditorViewModel
@@ -76,6 +114,10 @@ final class EditorViewModel {
     var drawingPoints: [CGPoint] = []
     var drawStartPoint: CGPoint?
     var drawCurrentPoint: CGPoint?
+
+    // MARK: - Canvas Scale (fitted size → original image size)
+
+    var canvasScale: CGFloat = 1.0
 
     // MARK: - Numbering
 
@@ -220,9 +262,15 @@ final class EditorViewModel {
             annotation.size = blurSize
             annotations.append(AnyAnnotation(annotation))
 
-            // Apply mosaic directly to the base image
-            let blurRect = CGRect(origin: origin, size: blurSize)
-            image = ImageProcessor.applyMosaic(to: image, in: blurRect)
+            // Convert canvas coordinates to original image coordinates
+            let s = canvasScale
+            let imageRect = CGRect(
+                x: origin.x * s,
+                y: origin.y * s,
+                width: blurSize.width * s,
+                height: blurSize.height * s
+            )
+            image = ImageProcessor.applyMosaic(to: image, in: imageRect)
 
         case .select, .text, .crop, .ocr:
             break
@@ -268,7 +316,7 @@ final class EditorViewModel {
 
     // MARK: - Final Image Rendering
 
-    func renderFinalImage() -> NSImage {
+    @MainActor func renderFinalImage() -> NSImage {
         let size = image.size
         let finalImage = NSImage(size: size)
 
