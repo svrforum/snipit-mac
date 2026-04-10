@@ -34,6 +34,11 @@ struct SettingsWindow: View {
                 .tabItem {
                     Label("테마", systemImage: "paintbrush")
                 }
+
+            AboutSettingsView()
+                .tabItem {
+                    Label("정보", systemImage: "info.circle")
+                }
         }
         .frame(width: 520, height: 380)
     }

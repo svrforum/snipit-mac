@@ -16,6 +16,7 @@ struct SnipItApp: App {
 
         Settings {
             SettingsWindow(viewModel: appState.settingsVM)
+                .environment(appState)
         }
 
         Window("editor", id: "editor") {
