@@ -49,6 +49,7 @@ final class AppState {
     let storageService: StorageService
     let permissionService: PermissionService
     let historyService: HistoryService
+    let updateService = UpdateService()
 
     // MARK: - View Models
 
