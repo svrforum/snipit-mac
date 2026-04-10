@@ -35,3 +35,15 @@ targets:
       path: SnipIt/Info.plist
       properties:
         LSUIElement: true
+
+  SnipItTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - SnipItTests
+    dependencies:
+      - target: SnipIt
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.svrforum.SnipIt.tests
+        GENERATE_INFOPLIST_FILE: YES
