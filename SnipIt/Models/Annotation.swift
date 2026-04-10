@@ -269,6 +269,28 @@ struct CodeBlockAnnotation: Annotation {
     }
 }
 
+// MARK: - BlurAnnotation
+
+struct BlurAnnotation: Annotation {
+    let id = UUID()
+    var origin: CGPoint = .zero
+    var size: CGSize = .zero
+    var color: Color = .clear
+    var strokeWidth: CGFloat = 0
+    var blockSize: Int = 16
+
+    func draw(in context: inout GraphicsContext, size: CGSize) {
+        // Draw a gray border around the blur region to indicate placement.
+        // The actual mosaic effect is applied directly to the base image.
+        let rect = CGRect(origin: origin, size: self.size)
+        context.stroke(
+            Path(rect),
+            with: .color(.gray.opacity(0.5)),
+            style: StrokeStyle(lineWidth: 1, dash: [4, 2])
+        )
+    }
+}
+
 // MARK: - AnyAnnotation (Type-Erased Wrapper)
 
 struct AnyAnnotation: Identifiable, Equatable {
