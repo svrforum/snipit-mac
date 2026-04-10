@@ -55,7 +55,7 @@ final class EditorViewModel {
 
     // MARK: - Image
 
-    let image: NSImage
+    var image: NSImage
 
     // MARK: - Annotations
 
@@ -206,7 +206,25 @@ final class EditorViewModel {
             annotation.origin = start
             annotations.append(AnyAnnotation(annotation))
 
-        case .select, .text, .blur, .crop, .ocr:
+        case .blur:
+            let origin = CGPoint(
+                x: min(start.x, end.x),
+                y: min(start.y, end.y)
+            )
+            let blurSize = CGSize(
+                width: abs(end.x - start.x),
+                height: abs(end.y - start.y)
+            )
+            var annotation = BlurAnnotation()
+            annotation.origin = origin
+            annotation.size = blurSize
+            annotations.append(AnyAnnotation(annotation))
+
+            // Apply mosaic directly to the base image
+            let blurRect = CGRect(origin: origin, size: blurSize)
+            image = ImageProcessor.applyMosaic(to: image, in: blurRect)
+
+        case .select, .text, .crop, .ocr:
             break
         }
 
