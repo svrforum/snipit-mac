@@ -313,6 +313,13 @@ Carbon API (RegisterEventHotKey) 사용.
 ### 테마
 - 시스템 / 다크 / 라이트
 
+### 정보
+- 앱 버전 표시
+- GitHub 레포 링크
+- 버그 리포트 링크
+- 후원: https://buymeacoffee.com/svrforum
+- MIT 라이선스 표시
+
 ---
 
 ## 의존성
