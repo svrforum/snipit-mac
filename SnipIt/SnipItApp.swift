@@ -1,3 +1,4 @@
+import AppKit
 import SwiftUI
 
 @main
@@ -90,6 +91,20 @@ final class AppState {
         self.historyVM = HistoryViewModel(historyService: history)
 
         registerHotkeys()
+        applyTheme()
+    }
+
+    // MARK: - Theme
+
+    func applyTheme() {
+        switch settingsVM.settings.theme {
+        case .system:
+            NSApp.appearance = nil
+        case .dark:
+            NSApp.appearance = NSAppearance(named: .darkAqua)
+        case .light:
+            NSApp.appearance = NSAppearance(named: .aqua)
+        }
     }
 
     // MARK: - Hotkey Registration

@@ -1,3 +1,4 @@
+import AppKit
 import SwiftUI
 
 struct ThemeSettingsView: View {
@@ -15,6 +16,16 @@ struct ThemeSettingsView: View {
         .formStyle(.grouped)
         .onChange(of: viewModel.settings) {
             viewModel.save()
+        }
+        .onChange(of: viewModel.settings.theme) {
+            switch viewModel.settings.theme {
+            case .system:
+                NSApp.appearance = nil
+            case .dark:
+                NSApp.appearance = NSAppearance(named: .darkAqua)
+            case .light:
+                NSApp.appearance = NSAppearance(named: .aqua)
+            }
         }
     }
 }
