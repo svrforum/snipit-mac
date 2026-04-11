@@ -13,11 +13,17 @@ struct EditorCanvasView: View {
             let _ = updateScale(scale)
 
             ZStack {
-                // Layer 1: Base image
+                // Layer 1: Base image with border
                 Image(nsImage: viewModel.image)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: fitted.width, height: fitted.height)
+                    .overlay(
+                        Rectangle()
+                            .stroke(Color.primary.opacity(0.12), lineWidth: 1)
+                            .frame(width: fitted.width, height: fitted.height)
+                    )
+                    .shadow(color: .black.opacity(0.08), radius: 4, x: 0, y: 2)
 
                 // Layer 2: Canvas for committed annotations + live preview
                 Canvas { context, size in
