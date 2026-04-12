@@ -7,7 +7,7 @@ struct HotkeyConfig: Codable, Equatable {
 
     static let fullScreenCapture = HotkeyConfig(
         keyCode: UInt32(kVK_ANSI_A),
-        modifiers: UInt32(controlKey | optionKey)
+        modifiers: UInt32(cmdKey | shiftKey)
     )
 
     static let regionCapture = HotkeyConfig(
@@ -17,21 +17,21 @@ struct HotkeyConfig: Codable, Equatable {
 
     static let windowCapture = HotkeyConfig(
         keyCode: UInt32(kVK_ANSI_W),
-        modifiers: UInt32(controlKey | optionKey)
+        modifiers: UInt32(cmdKey | shiftKey)
     )
 
     static let scrollCapture = HotkeyConfig(
         keyCode: UInt32(kVK_ANSI_D),
-        modifiers: UInt32(controlKey | optionKey)
+        modifiers: UInt32(cmdKey | shiftKey)
     )
 
     static let gifRecording = HotkeyConfig(
         keyCode: UInt32(kVK_ANSI_G),
-        modifiers: UInt32(controlKey | optionKey)
+        modifiers: UInt32(cmdKey | shiftKey)
     )
 
     static let mp4Recording = HotkeyConfig(
         keyCode: UInt32(kVK_ANSI_V),
-        modifiers: UInt32(controlKey | optionKey)
+        modifiers: UInt32(cmdKey | shiftKey)
     )
 }

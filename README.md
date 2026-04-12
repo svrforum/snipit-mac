@@ -59,12 +59,12 @@
 
 | 기능 | 단축키 |
 |------|--------|
-| 전체 화면 캡처 | `Ctrl+Opt+A` |
+| 전체 화면 캡처 | `Cmd+Shift+A` |
 | 영역 선택 캡처 | `Cmd+Shift+C` |
-| 활성 창 캡처 | `Ctrl+Opt+W` |
-| 스크롤 캡처 | `Ctrl+Opt+D` |
-| GIF 녹화 | `Ctrl+Opt+G` |
-| MP4 녹화 | `Ctrl+Opt+V` |
+| 활성 창 캡처 | `Cmd+Shift+W` |
+| 스크롤 캡처 | `Cmd+Shift+D` |
+| GIF 녹화 | `Cmd+Shift+G` |
+| MP4 녹화 | `Cmd+Shift+V` |
 
 모든 단축키는 설정에서 변경 가능합니다.
 

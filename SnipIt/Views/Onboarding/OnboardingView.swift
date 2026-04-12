@@ -120,11 +120,11 @@ struct OnboardingView: View {
                 .fontWeight(.semibold)
 
             VStack(spacing: 8) {
-                shortcutRow("전체 화면", shortcut: "⌃⌥A")
+                shortcutRow("전체 화면", shortcut: "⌘⇧A")
                 shortcutRow("영역 선택", shortcut: "⌘⇧C")
-                shortcutRow("활성 창", shortcut: "⌃⌥W")
-                shortcutRow("GIF 녹화", shortcut: "⌃⌥G")
-                shortcutRow("MP4 녹화", shortcut: "⌃⌥V")
+                shortcutRow("활성 창", shortcut: "⌘⇧W")
+                shortcutRow("GIF 녹화", shortcut: "⌘⇧G")
+                shortcutRow("MP4 녹화", shortcut: "⌘⇧V")
             }
             .padding(.horizontal, 40)
 

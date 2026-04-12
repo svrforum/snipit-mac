@@ -36,7 +36,7 @@ struct MenuBarView: View {
                     captureButton(
                         title: "전체 화면",
                         icon: "rectangle.dashed",
-                        shortcut: "⌃⌥A"
+                        shortcut: "⌘⇧A"
                     ) {
                         appState.showCaptureOverlay(mode: .fullScreen)
                     }
@@ -54,7 +54,7 @@ struct MenuBarView: View {
                     captureButton(
                         title: "활성 창",
                         icon: "macwindow",
-                        shortcut: "⌃⌥W"
+                        shortcut: "⌘⇧W"
                     ) {
                         appState.showCaptureOverlay(mode: .window)
                     }
@@ -62,7 +62,7 @@ struct MenuBarView: View {
                     captureButton(
                         title: "스크롤",
                         icon: "arrow.up.and.down.text.horizontal",
-                        shortcut: "⌃⌥D"
+                        shortcut: "⌘⇧D"
                     ) {
                         appState.showCaptureOverlay(mode: .scroll)
                     }
@@ -76,7 +76,7 @@ struct MenuBarView: View {
                 captureButton(
                     title: "GIF 녹화",
                     icon: "record.circle",
-                    shortcut: "⌃⌥G",
+                    shortcut: "⌘⇧G",
                     isActive: appState.recordingVM.isRecording && appState.recordingVM.recordingMode == .gif
                 ) {
                     appState.toggleRecording(mode: .gif)
@@ -85,7 +85,7 @@ struct MenuBarView: View {
                 captureButton(
                     title: "MP4 녹화",
                     icon: "video",
-                    shortcut: "⌃⌥V",
+                    shortcut: "⌘⇧V",
                     isActive: appState.recordingVM.isRecording && appState.recordingVM.recordingMode == .mp4
                 ) {
                     appState.toggleRecording(mode: .mp4)
