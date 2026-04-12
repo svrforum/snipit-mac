@@ -30,41 +30,33 @@ struct OverlayContentView: View {
     @Bindable var state: OverlayState
 
     var body: some View {
-        ZStack {
-            if state.isSelecting {
-                RegionSelectionView(
-                    dimmingOpacity: state.dimmingOpacity,
-                    startPoint: state.startPoint,
-                    currentPoint: state.currentPoint,
-                    isSelecting: true
-                )
-
-                MagnifierView(screenImage: state.screenImage, mousePosition: state.mousePosition)
-                    .position(
-                        x: state.mousePosition.x + 80,
-                        y: state.mousePosition.y - 80
+        GeometryReader { geo in
+            ZStack {
+                if state.isSelecting {
+                    RegionSelectionView(
+                        dimmingOpacity: state.dimmingOpacity,
+                        startPoint: state.startPoint,
+                        currentPoint: state.currentPoint,
+                        isSelecting: true
                     )
-            } else {
-                RegionSelectionView(
-                    dimmingOpacity: state.dimmingOpacity,
-                    startPoint: .zero,
-                    currentPoint: .zero,
-                    isSelecting: false
-                )
-
-                SmartDetectionView(
-                    detectedWindowFrame: state.detectedWindowFrame,
-                    windowTitle: state.windowTitle
-                )
-
-                MagnifierView(screenImage: state.screenImage, mousePosition: state.mousePosition)
-                    .position(
-                        x: state.mousePosition.x + 80,
-                        y: state.mousePosition.y - 80
+                } else {
+                    RegionSelectionView(
+                        dimmingOpacity: state.dimmingOpacity,
+                        startPoint: .zero,
+                        currentPoint: .zero,
+                        isSelecting: false
                     )
+
+                    SmartDetectionView(
+                        detectedWindowFrame: state.detectedWindowFrame,
+                        windowTitle: state.windowTitle
+                    )
+                }
+
             }
         }
     }
+
 }
 
 // MARK: - CaptureOverlayWindow
@@ -114,17 +106,11 @@ final class CaptureOverlayWindow: NSObject {
         let window = NSWindow.createOverlayWindow()
         overlayWindow = window
 
-        // Create NSHostingView ONCE with observable state
         let contentView = OverlayContentView(state: state)
         let hostingView = NSHostingView(rootView: contentView)
         hostingView.frame = window.contentView?.bounds ?? .zero
         hostingView.autoresizingMask = [.width, .height]
         window.contentView = hostingView
-
-        // Capture screen image for magnifier
-        Task {
-            await captureScreenImage()
-        }
 
         window.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
@@ -139,8 +125,15 @@ final class CaptureOverlayWindow: NSObject {
             let content = try await captureService.getAvailableContent()
             guard let display = content.displays.first else { return }
 
-            let filter = SCContentFilter(display: display, excludingWindows: [])
+            // Exclude SnipIt windows from the screenshot
+            let bundleID = Bundle.main.bundleIdentifier ?? ""
+            let snipItWindows = content.windows.filter {
+                $0.owningApplication?.bundleIdentifier == bundleID
+            }
+
+            let filter = SCContentFilter(display: display, excludingWindows: snipItWindows)
             let configuration = SCStreamConfiguration()
+            // Capture at 1x points — matches mouse coordinate system
             configuration.width = Int(display.width)
             configuration.height = Int(display.height)
             configuration.showsCursor = false
@@ -276,14 +269,12 @@ final class CaptureOverlayWindow: NSObject {
                         let content = try await captureService.getAvailableContent()
                         guard let display = content.displays.first else { return }
 
-                        let screenHeight = CGFloat(display.height)
-                        let captureRect = CGRect(
-                            x: rect.origin.x,
-                            y: screenHeight - rect.origin.y - rect.height,
-                            width: rect.width,
-                            height: rect.height
-                        )
+                        // Overlay uses top-left origin (flipped).
+                        // SCScreenshotManager.sourceRect also uses top-left origin.
+                        // No Y-flip needed.
+                        let captureRect = rect
 
+                        debugLog("region: overlay=\(rect) capture=\(captureRect) display=\(display.width)x\(display.height)")
                         await finish(with: .region(display, captureRect))
                     } catch {
                         await finish(with: nil)
