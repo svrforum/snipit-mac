@@ -70,6 +70,7 @@ final class AppState {
     // MARK: - Overlay (strong ref to prevent dealloc during capture)
 
     private var activeOverlay: CaptureOverlayWindow?
+    private var isBusy = false  // Prevents concurrent capture/recording actions
 
     // MARK: - Editor Window
 
@@ -157,11 +158,15 @@ final class AppState {
     // MARK: - Capture
 
     func showCaptureOverlay(mode: CaptureMode = .region) {
+        guard !isBusy else { return }
+        isBusy = true
+
         switch mode {
         case .fullScreen:
             Task { @MainActor in
                 await captureVM.captureFullScreen()
                 if settingsVM.settings.openEditorAfterCapture { openEditor() }
+                isBusy = false
             }
 
         case .region, .window, .scroll:
@@ -175,7 +180,10 @@ final class AppState {
                 let result = await overlay.show()
                 activeOverlay = nil
 
-                guard let result else { return }
+                guard let result else {
+                    isBusy = false
+                    return
+                }
 
                 switch result {
                 case .fullScreen:
@@ -187,6 +195,7 @@ final class AppState {
                 }
 
                 if settingsVM.settings.openEditorAfterCapture { openEditor() }
+                isBusy = false
             }
         }
     }
@@ -253,19 +262,21 @@ final class AppState {
     private var recordingControlState: RecordingControlState?
 
     func toggleRecording(mode: RecordingMode) {
-        debugLog("toggleRecording mode=\(mode.rawValue) isRecording=\(recordingVM.isRecording)")
         if recordingVM.isRecording {
+            // Stop — always allow
             Task { @MainActor in
                 recordingBorder.hide()
                 hideRecordingControl()
                 await recordingVM.stopRecording()
-                // Show result in Finder
+                isBusy = false
                 if let url = recordingVM.outputURL {
                     NSWorkspace.shared.activateFileViewerSelecting([url])
                 }
             }
         } else {
-            // Show region selection overlay, then countdown, then record
+            guard !isBusy else { return }
+            isBusy = true
+
             let overlay = CaptureOverlayWindow(
                 captureVM: captureVM,
                 dimmingOpacity: settingsVM.settings.dimmingOpacity
@@ -276,7 +287,10 @@ final class AppState {
                 let result = await overlay.show()
                 activeOverlay = nil
 
-                guard let result else { return }
+                guard let result else {
+                    isBusy = false
+                    return
+                }
 
                 let captureService = ScreenCaptureService()
                 do {
@@ -323,6 +337,7 @@ final class AppState {
                     )
                 } catch {
                     debugLog("Recording error: \(error)")
+                    isBusy = false
                 }
             }
         }
@@ -380,6 +395,7 @@ final class AppState {
             self.recordingBorder.hide()
             self.hideRecordingControl()
             self.recordingVM.cancelRecording()
+            self.isBusy = false
         }
         self.recordingControlState = state
 
